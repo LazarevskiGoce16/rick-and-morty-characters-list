@@ -1,5 +1,7 @@
 import { gql, useQuery } from "@apollo/client";
 import { useState } from "react";
+import { CharacterCard } from "./CharacterCard";
+import { useTranslation } from "react-i18next";
 
 const CHARACTERS_QUERY = gql`
   query GetCharacters($page: Int!, $status: String, $species: String) {
@@ -8,77 +10,75 @@ const CHARACTERS_QUERY = gql`
         next
     }
         results {
-            id
-            name
-            status
-            species
-            gender
-            origin {
-                name
-            }
-            image
+      id
+      name
+      status
+      species
+      type
+      gender
+      origin {
+        id
+        name
+      }
+      location {
+        id
+        name
+      }
+      image
+      episode {
+        id
+        name
+      }
+      created
         }
     }
-}
-`;
+}`;
 
-const CharacterList = ({ status, species }) => {
-    const [page, setPage] = useState(1); // we can remove setPage because it's not needed
+export const CharacterList = ({ status, species }) => {
+    const { t } = useTranslation();
+    const [page] = useState(1);
+
     const { loading, error, data, fetchMore } = useQuery(CHARACTERS_QUERY, {
-    variables: { page, status, species }
-  });
+        variables: { page, status, species }
+    });
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error.message}</p>;
-  console.log(data);
+    if (loading) return <p>Loading...</p>;
+    if (error) return <p>Error: {error.message}</p>;
+    console.log(data);
 
-  const handleLoadMore = () => {
-    // const nextPage = page + 1;
-    fetchMore({
-        variables: { page: page + 1},
-        updateQuery: (prevResult, { fetchMoreResult }) => {
-            if (!fetchMoreResult) return prevResult;
-            return {
-                characters: {
-                    ...fetchMoreResult.characters,
-                    results: [
-                        ...prevResult.characters.results,
-                        ...fetchMoreResult.characters.results
-                    ]
-                }
-            };
-        }
-    })
-    // .then(() => {
-    //     setPage(nextPage);
-    // });
-  };
+    const handleLoadMore = () => {
+        fetchMore({
+            variables: { page: page + 1},
+            updateQuery: (prevResult, { fetchMoreResult }) => {
+                if (!fetchMoreResult) return prevResult;
+                return {
+                    characters: {
+                        ...fetchMoreResult.characters,
+                        results: [
+                            ...prevResult.characters.results,
+                            ...fetchMoreResult.characters.results
+                        ]
+                    }
+                };
+            }
+        })
+    };
 
-  return (
-    <div className="list-container">
-        <div className="">
-            {data.characters.results.map((character) => (
-                // this should be a separate card component
-                <div className="">
-                <img src={character.image} alt={character.name} className="" />
-                <h2 className="">{character.name}</h2>
-                <p>Status: {character.status}</p>
-                <p>Species: {character.species}</p>
-                <p>Gender: {character.gender}</p>
-                <p>Origin: {character.origin.name}</p>
-              </div>
-            ))}
+    return (
+        <div className="list-container">
+            <div className="">
+                {data.characters.results.map((character) => (
+                    <CharacterCard key={character.id} character={character}/>
+                ))}
+            </div>
+            {data.characters.info.next && (
+                <button
+                    onClick={handleLoadMore}
+                    className="load-more-btn"
+                >
+                    {t("loadMore")}
+                </button>
+            )}
         </div>
-        {data.characters.info.next && (
-            <button
-                onClick={handleLoadMore}
-                className="load-more-btn"
-            >
-                Load More
-            </button>
-        )}
-    </div>
-  );
+    );
 };
-
-export default CharacterList;
