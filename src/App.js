@@ -1,15 +1,11 @@
 import { I18nextProvider, useTranslation } from "react-i18next";
-import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
+import { ApolloProvider } from "@apollo/client";
 import { CharacterList } from "./components/CharacterList";
 import { useState } from "react";
 import { Filters } from "./components/Filters";
 import { Footer } from "./components/Footer";
 import i18n from "./i18n";
-
-const client = new ApolloClient({
-  uri: "https://rickandmortyapi.com/graphql",
-  cache: new InMemoryCache()
-});
+import client from "./services/apolloClient";
 
 const App = () => {
     const { t } = useTranslation();

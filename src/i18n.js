@@ -21,7 +21,8 @@ const resources = {
             sortByName: "Sort by Name",
             sortByOrigin: "Sort by Origin",
             prevPage: "Previous",
-            nextPage: "Next"
+            nextPage: "Next",
+            sortBy: "Sort by:"
         }
     },
     de: {
@@ -43,7 +44,8 @@ const resources = {
             sortByName: "Nach Name sortieren",
             sortByOrigin: "Nach Herkunft sortieren",
             prevPage: "Zurück",
-            nextPage: "Weiter"
+            nextPage: "Weiter",
+            sortBy: "Sortieren nach:"
         }
     }
 };
