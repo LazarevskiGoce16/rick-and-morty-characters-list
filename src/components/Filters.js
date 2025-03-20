@@ -5,12 +5,10 @@ export const Filters = ({ setStatus, setSpecies }) => {
 
     return (
         <div className="filters-container">
-            <h2>{t("filterTitle")}</h2>
-
             <label>{t("status")}:</label>
             <select
                 onChange={(e) => setStatus(e.target.value)}
-                className=""
+                className="filters-select"
             >
                 <option value="">{t("all")}</option>
                 <option value="Alive">{t("alive")}</option>
@@ -21,7 +19,7 @@ export const Filters = ({ setStatus, setSpecies }) => {
             <label>{t("species")}:</label>
             <select
                 onChange={(e) => setSpecies(e.target.value)}
-                className=""
+                className="filters-select"
             >
                 <option value="">{t("all")}</option>
                 <option value="Human">{t("human")}</option>

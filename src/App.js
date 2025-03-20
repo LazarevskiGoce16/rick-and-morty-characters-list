@@ -6,6 +6,7 @@ import { Filters } from "./components/Filters";
 import { Footer } from "./components/Footer";
 import i18n from "./i18n";
 import client from "./services/apolloClient";
+import "./styles.css";
 
 const App = () => {
     const { t } = useTranslation();
@@ -16,8 +17,10 @@ const App = () => {
         <ApolloProvider client={client}>
             <I18nextProvider i18n={i18n}>
                 <div className="App">
-                    <h1>{t("title")}</h1>
-                    <Filters setStatus={setStatus} setSpecies={setSpecies}/>
+                    <div className="header-container">
+                        <h1>{t("title")}</h1>
+                        <Filters setStatus={setStatus} setSpecies={setSpecies}/>
+                    </div>
                     <CharacterList status={status} species={species}/>
                     <Footer />
                 </div>

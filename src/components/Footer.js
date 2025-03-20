@@ -13,14 +13,16 @@ export const Footer = () => {
 
     return (
         <footer>
-            <button 
-                onClick={(event) => changeLanguage("en", event)}
-                className="language-btn"
-            >EN</button>
-            <button 
-                onClick={(event) => changeLanguage("de", event)}
-                className="language-btn"
-            >DE</button>
+            <div className="languages">
+                <button 
+                    onClick={(event) => changeLanguage("en", event)}
+                    className="language-btn en"
+                ></button>
+                <button 
+                    onClick={(event) => changeLanguage("de", event)}
+                    className="language-btn de"
+                ></button>
+            </div>
             <p>© {new Date().getFullYear()} {t("footerText")}</p>
         </footer>
     );
